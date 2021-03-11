@@ -1,7 +1,4 @@
 <script>
-	// import { writable } from 'svelte/store';
-	// let progress = writable(0);
-
 	import Moveable from "svelte-moveable";
 	const frame = {
 		translate: [0, 0],
@@ -17,6 +14,10 @@
 		clearInterval(progress);
 	}
 
+	$: if (barWidth > 49) {
+		document.getElementById("myBar").style.backgroundColor="green";
+	}
+
 	const addColour = () => barWidth += 1;
 
 	const makeProgress = () => {
@@ -30,7 +31,6 @@
 <div class="target" bind:this={target}>
 	<h3>Aiki</h3>
 	<p>You are {barWidth}% complete with your task.</p>
-	<!-- <progress value={$progress}></progress> -->
 
 	<div id="myProgress">
 		<div id="myBar" style="width:{barWidth}%"></div>
@@ -40,15 +40,16 @@
 	<p>Congrats! You're done!</p>
 	<button class="continue">Continue</button>
 	{:else if barWidth < targetTime}
+	<p>You can skip if you want.</p>
 	<button class="emergencySkip">Emergency Skip</button>
 	{/if}
 	<br>
-	
 	
 </div>
 
 <Moveable
 	origin={false}
+	dragTarget={false}
     draggable={true}
     target={target}
     throttleDrag={0}
@@ -67,16 +68,18 @@
 
 <style>
 
-#myProgress {
-  width: 100%;
-  background-color: grey;
-}
+	#myProgress {
+		width: 100%;
+		background-color: grey;
+		border-radius: 10px;
+	}
 
-#myBar {
-  width: 0%;
-  height: 30px;
-  background-color: green;
-}
+	#myBar {
+		width: 0%;
+		height: 30px;
+		background-color: red;
+		border-radius: 10px;
+	}
 
 	.target {
 		padding: 20px;
